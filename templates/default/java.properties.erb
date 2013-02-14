@@ -1,0 +1,7 @@
+default.java-home=<%= node['java']['java_home'] %>
+overwrite-env-java-home=false
+overwrite-env-java-args=false
+
+<% node['opendj']['java_args'].each do |prog,args| -%>
+<%= prog %>.java-args=<%= args %>
+<% end -%>

@@ -1,0 +1,33 @@
+{
+  "name": "opendj",
+  "description": "Installs OpenDJ LDAP server",
+  "long_description": "",
+  "maintainer": "Elliot Kendall",
+  "maintainer_email": "elliot.kendall@ucsf.edu",
+  "license": "See License.md",
+  "platforms": {
+    "centos": [
+
+    ]
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "opendj": "Installs OpenDJ LDAP server"
+  },
+  "version": "0.1.0"
+}

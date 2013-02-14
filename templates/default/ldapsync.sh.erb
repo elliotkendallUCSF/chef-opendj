@@ -1,0 +1,13 @@
+#!/bin/bash
+test -f <%= node["opendj"]["sync_file"] %> || exit
+chgrp <%= node['opendj']['user'] %> /home/ldapsync/backup.ldif
+chmod g+r /home/ldapsync/backup.ldif
+/etc/init.d/opendj stop > /dev/null
+sudo -u <%= node['opendj']['user'] %> \
+ <%= node['opendj']['home'] %>/bin/import-ldif \
+ --includeBranch <%= node["opendj"]["user_root_dn"] %> \
+ --backendID userRoot \
+ --clearBackend \
+ --ldifFile <%= node["opendj"]["sync_file"] %> \
+ > /dev/null
+/etc/init.d/opendj start > /dev/null

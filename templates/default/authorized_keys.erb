@@ -1,0 +1,3 @@
+<% node['opendj']['sync_keys'].each do |key| %>
+command="scp -t <%= node['opendj']['sync_file']%>" <%= key %>
+<% end -%>
