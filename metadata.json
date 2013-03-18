@@ -4,9 +4,21 @@
   "long_description": "",
   "maintainer": "Elliot Kendall",
   "maintainer_email": "elliot.kendall@ucsf.edu",
-  "license": "See License.md",
+  "license": "BSD",
   "platforms": {
+    "redhat": [
+
+    ],
     "centos": [
+
+    ],
+    "fedora": [
+
+    ],
+    "ubuntu": [
+
+    ],
+    "debian": [
 
     ]
   },
@@ -29,5 +41,5 @@
   "recipes": {
     "opendj": "Installs OpenDJ LDAP server"
   },
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
