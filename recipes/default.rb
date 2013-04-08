@@ -38,9 +38,11 @@ cookbook_file "#{node['opendj']['home']}/dsml.war" do
   mode "0644"
 end
 
-template "#{node['tomcat']['config_dir']}/Catalina/localhost/dsml.xml" do
-  source "dsml.xml.erb"
-  mode 0644
+if node['opendj']['dsml_enabled']
+  template "#{node['tomcat']['config_dir']}/Catalina/localhost/dsml.xml" do
+    source "dsml.xml.erb"
+    mode 0644
+  end
 end
 
 if node['opendj']['sync_enabled']

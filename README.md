@@ -20,6 +20,11 @@ Should match the archive you place in files/default - see `Usage` below.
 * `node['opendj']['install_dir']` - Where to unpack the software. Defaults
 to `/opt`
 
+* `node['opendj']['dsml_enabled']` - Whether to enable the DSML gateway. 
+Defaults to true.  If set, you will also need the Tomcat recipe and to place
+a copy of the DSML gateway war file in the files_default directory - see
+below.
+
 * `node['opendj']['user']` - The user to run as. Defaults to `opendj`
 
 * `node['opendj']['user_root_dn']` - The root DN of the directory. Defaults
@@ -92,9 +97,9 @@ the replication user. Defaults to `badpass`. **Override this!**
 Usage
 =====
 
-Place the OpenDJ distribution zip file and matching DSML gateway war file in
-the files/default directory of this cookbook.  Also place any LDIF files you
-want to load in the same place.
+Place the OpenDJ distribution zip file and (if DSML is enabled - see above)
+matching DSML gateway war file in the files/default directory of this
+cookbook.  Also place any LDIF files you want to load in the same place.
 
 Define at least the `user_root_dn` and `dir_manager_password` attributes. 
 Here is an example of a configuration set defined as part of a role:
