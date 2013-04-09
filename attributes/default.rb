@@ -28,6 +28,8 @@ default["opendj"]["ssl_chain"] = [ ]
 default["opendj"]["keystore_pass"] = "badpass"
 default["opendj"]["dir_manager_bind_dn"] = "cn=Directory Manager"
 default["opendj"]["dir_manager_password"] = "badpass"
+default["opendj"]["indexes"] = []
+default["opendj"]["backup_ldif"] = nil
 default["opendj"]["properties"] = {}
 default["opendj"]["ldif_files"] = []
 default["opendj"]["replication"]["host_search"] = 'role:sample-opendj-role'

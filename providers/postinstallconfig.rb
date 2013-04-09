@@ -68,7 +68,7 @@ action :run do
     action [ :start, :enable ]
   end
 
-  template "#{node['opendj']['home']}//config/java.properties" do
+  template "#{node['opendj']['home']}/config/java.properties" do
     source "java.properties.erb"
     mode "0644"
   end
@@ -210,35 +210,37 @@ action :run do
     notifies :start, resources(:service => "opendj")
   end
 
-  cookbook_file "#{node['opendj']['home']}/#{node['opendj']['backup_ldif']}" do
-    owner "#{node['opendj']['user']}"
-    mode "0644"
-  end
+  if not node['opendj']['backup_ldif'].nil?
+    cookbook_file "#{node['opendj']['home']}/#{node['opendj']['backup_ldif']}" do
+      owner "#{node['opendj']['user']}"
+      mode "0644"
+    end
 
-  # Calling File.basename doesn't work here because of a naming conflict
-  # with Chef::Provider::File:Class
-  require 'pathname'
-  pn = Pathname.new(node['opendj']['backup_ldif'])
-  uncompressed = pn.basename(".gz").to_s
-  if uncompressed != node['opendj']['backup_ldif']
-    script "decompress_backup" do
+    # Calling File.basename doesn't work here because of a naming conflict
+    # with Chef::Provider::File:Class
+    require 'pathname'
+    pn = Pathname.new(node['opendj']['backup_ldif'])
+    uncompressed = pn.basename(".gz").to_s
+    if uncompressed != node['opendj']['backup_ldif']
+      script "decompress_backup" do
+        interpreter "bash"
+        user "#{node['opendj']['user']}"
+        code <<-EOH
+          gunzip #{node['opendj']['home']}/#{node['opendj']['backup_ldif']}
+        EOH
+      end
+    end
+    script "import_backup" do
       interpreter "bash"
       user "#{node['opendj']['user']}"
       code <<-EOH
-        gunzip #{node['opendj']['home']}/#{node['opendj']['backup_ldif']}
+        #{node["opendj"]["home"]}/bin/import-ldif \
+         --includeBranch #{node["opendj"]["user_root_dn"]} \
+         --backendID userRoot \
+         --ldifFile #{node['opendj']['home']}/#{uncompressed}
       EOH
+      # Start the server back up when we're done
+      notifies :start, resources(:service => "opendj")
     end
-  end
-  script "import_backup" do
-    interpreter "bash"
-    user "#{node['opendj']['user']}"
-    code <<-EOH
-      #{node["opendj"]["home"]}/bin/import-ldif \
-       --includeBranch #{node["opendj"]["user_root_dn"]} \
-       --backendID userRoot \
-       --ldifFile #{node['opendj']['home']}/#{uncompressed}
-    EOH
-    # Start the server back up when we're done
-    notifies :start, resources(:service => "opendj")
   end
 end
