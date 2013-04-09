@@ -71,18 +71,20 @@ if node['opendj']['sync_enabled']
   end
 end
 
-results = Chef::Search::Query.new.search(:node, node["opendj"]["replication"]["host_search"]).first.compact
+results = Chef::Search::Query.new.search(:node, node["opendj"]["replication"]["host_search"]).first
 if not results.nil? and results.count > 1
   repargs = ""
   hostnum = 0
   results.each() do |n|
-    host = n['ipaddress']
-    hostnum = hostnum + 1
-    repargs << " --host#{hostnum} #{host}"
-    repargs << " --port#{hostnum} #{node['opendj']['ssl_port']}"
-    repargs << " --bindDN#{hostnum} \"#{node['opendj']['dir_manager_bind_dn']}\""
-    repargs << " --bindPassword#{hostnum} #{node['opendj']['dir_manager_password']}"
-    repargs << " --replicationPort#{hostnum} #{node['opendj']['replication']['port']}"
+    if not n.nil?
+      host = n['ipaddress']
+      hostnum = hostnum + 1
+      repargs << " --host#{hostnum} #{host}"
+      repargs << " --port#{hostnum} #{node['opendj']['ssl_port']}"
+      repargs << " --bindDN#{hostnum} \"#{node['opendj']['dir_manager_bind_dn']}\""
+      repargs << " --bindPassword#{hostnum} #{node['opendj']['dir_manager_password']}"
+      repargs << " --replicationPort#{hostnum} #{node['opendj']['replication']['port']} \\\n"
+    end
   end
   file "#{node['opendj']['home']}/setup_replication.sh" do
     mode "0700"
@@ -101,8 +103,7 @@ if not results.nil? and results.count > 1
  --adminUID #{node["opendj"]["replication"]["uid"]} \\
  --adminPassword "#{node["opendj"]["replication"]["password"]}" \\
  --baseDN #{node["opendj"]["user_root_dn"]} \\
- #{repargs} \\
- --trustAll \\
+#{repargs} --trustAll \\
  --no-prompt
     EOH
   end
