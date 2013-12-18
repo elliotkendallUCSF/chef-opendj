@@ -5,6 +5,7 @@
 
 default["opendj"]["version"] = "2.5.0-Xpress1"
 default["opendj"]["install_dir"] = "/opt"
+default["opendj"]["cookbook_source"] = "opendj"
 default["opendj"]["installer_archive"] = default["opendj"]["install_dir"] + "/OpenDJ-" + default["opendj"]["version"] + ".zip"
 default["opendj"]["dsml_enabled"] = true
 default["opendj"]["dsml_war"] = "OpenDJ-" + default["opendj"]["version"] + "-DSML.war"

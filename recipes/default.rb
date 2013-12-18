@@ -8,6 +8,7 @@ directory "#{node['opendj']['install_dir']}" do
 end
 
 cookbook_file "#{node['opendj']['installer_archive']}" do
+  cookbook node['opendj']['cookbook_source']
   mode "0644"
 end
 
