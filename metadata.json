@@ -5,23 +5,6 @@
   "maintainer": "Elliot Kendall",
   "maintainer_email": "elliot.kendall@ucsf.edu",
   "license": "BSD",
-  "platforms": {
-    "redhat": [
-
-    ],
-    "centos": [
-
-    ],
-    "fedora": [
-
-    ],
-    "ubuntu": [
-
-    ],
-    "debian": [
-
-    ]
-  },
   "dependencies": {
   },
   "recommendations": {

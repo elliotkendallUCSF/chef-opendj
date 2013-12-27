@@ -20,6 +20,8 @@ Should match the archive you place in files/default - see `Usage` below.
 * `node['opendj']['install_dir']` - Where to unpack the software. Defaults
 to `/opt`
 
+* `node['opendj']['cookbook_source']` - Where to find the OpenDJ zip files if you use a wrapper cookbook. Defaults to `opendj`
+
 * `node['opendj']['dsml_enabled']` - Whether to enable the DSML gateway. 
 Defaults to true.  If set, you will also need the Tomcat recipe and to place
 a copy of the DSML gateway war file in the files_default directory - see
