@@ -34,12 +34,14 @@ opendj_postinstallconfig "default" do
   subscribes :run, resources("script[unpack_archive]"), :immediately
 end
 
-cookbook_file "#{node['opendj']['home']}/dsml.war" do
-  source "#{node['opendj']['dsml_war']}"
-  mode "0644"
-end
+
 
 if node['opendj']['dsml_enabled']
+  cookbook_file "#{node['opendj']['home']}/dsml.war" do
+    source "#{node['opendj']['dsml_war']}"
+    mode "0644"
+  end
+  
   template "#{node['tomcat']['config_dir']}/Catalina/localhost/dsml.xml" do
     source "dsml.xml.erb"
     mode 0644
