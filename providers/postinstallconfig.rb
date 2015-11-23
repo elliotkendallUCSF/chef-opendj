@@ -42,7 +42,7 @@ action :run do
     cwd "#{node['opendj']['home']}"
     user "#{node['opendj']['user']}"
     code <<-EOH
-      ./setup --cli --no-prompt --addBaseEntry --enableStartTLS \
+      ./setup --cli --acceptLicense --no-prompt --addBaseEntry --enableStartTLS \
         --doNotStart \
         --usePkcs12Keystore #{node['opendj']['home']}/certs/keystore.p12 \
         --keyStorePassword #{node["opendj"]["keystore_pass"]} \
