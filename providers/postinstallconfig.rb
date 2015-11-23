@@ -13,28 +13,43 @@ action :run do
     mode "0644"
   end
 
-  cacerts = ""
-  node['opendj']['ssl_chain'].each do |cert|
-    cookbook_file "#{node['opendj']['home']}/certs/#{cert}" do
-      owner "#{node['opendj']['user']}"
-      mode "0644"
+  if node['opendj']['ssl_chain'].empty? then
+    script "create_keystore" do
+      interpreter "bash"
+      cwd "#{node['opendj']['home']}/certs"
+      user "#{node['opendj']['user']}"
+      code <<-EOH
+        openssl pkcs12 -export \
+         -inkey #{node['opendj']['ssl_key']} \
+         -in #{node['opendj']['ssl_cert']} \
+         -password pass:#{node['opendj']['keystore_pass']} \
+         -out keystore.p12
+      EOH
     end
-    cacerts = cacerts + "#{cert} "
-  end
-  script "create_keystore" do
-    interpreter "bash"
-    cwd "#{node['opendj']['home']}/certs"
-    user "#{node['opendj']['user']}"
-    code <<-EOH
-      cat #{cacerts} > cacerts.pem
-      openssl pkcs12 -export \
-       -inkey #{node['opendj']['ssl_key']} \
-       -in #{node['opendj']['ssl_cert']} \
-       -chain \
-       -CAfile cacerts.pem \
-       -password pass:#{node['opendj']['keystore_pass']} \
-       -out keystore.p12
-    EOH
+  else
+    cacerts = ""
+    node['opendj']['ssl_chain'].each do |cert|
+      cookbook_file "#{node['opendj']['home']}/certs/#{cert}" do
+        owner "#{node['opendj']['user']}"
+        mode "0644"
+      end
+      cacerts = cacerts + "#{cert} "
+    end
+    script "create_keystore" do
+      interpreter "bash"
+      cwd "#{node['opendj']['home']}/certs"
+      user "#{node['opendj']['user']}"
+      code <<-EOH
+        cat #{cacerts} > cacerts.pem
+        openssl pkcs12 -export \
+         -inkey #{node['opendj']['ssl_key']} \
+         -in #{node['opendj']['ssl_cert']} \
+         -chain \
+         -CAfile cacerts.pem \
+         -password pass:#{node['opendj']['keystore_pass']} \
+         -out keystore.p12
+      EOH
+    end
   end
 
   script "install_opendj" do
