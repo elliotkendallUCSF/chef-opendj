@@ -3,13 +3,13 @@
 # Attributes:: default
 #
 
-default["opendj"]["version"] = "2.5.0-Xpress1"
+default["opendj"]["version"] = "2.6.0"
 default["opendj"]["install_dir"] = "/opt"
 default["opendj"]["cookbook_source"] = "opendj"
 default["opendj"]["installer_archive"] = default["opendj"]["install_dir"] + "/OpenDJ-" + default["opendj"]["version"] + ".zip"
 default["opendj"]["dsml_enabled"] = true
 default["opendj"]["dsml_war"] = "OpenDJ-" + default["opendj"]["version"] + "-DSML.war"
-default["opendj"]["home"] = default["opendj"]["install_dir"] + "/OpenDJ-" + default["opendj"]["version"]
+default["opendj"]["home"] = default["opendj"]["install_dir"] + "/opendj"
 
 default["opendj"]["sync_enabled"] = false
 default["opendj"]["sync_user"] = "ldapsync"
